@@ -35,7 +35,7 @@ export default function Page() {
   }
 
   return (
-    {/* 主容器 - 全屏高度，最大宽度居中，带内边距 */}
+    // 主容器 - 全屏高度，最大宽度居中，带内边距
     <div className="flex flex-col h-screen max-w-2xl mx-auto p-4">
       {/* 顶部导航栏 - 包含标题和退出登录按钮 */}
       <div className="flex justify-between items-center mb-4">
@@ -51,7 +51,7 @@ export default function Page() {
       {/* 消息显示区域 - 可滚动，占据剩余空间 */}
       <div className="flex-1 overflow-y-auto mb-4 space-y-4">
         {messages.map((message, index) => (
-          {/* 单条消息容器 - 根据角色显示不同样式 */}
+          // 单条消息容器 - 根据角色显示不同样式
           <div
             key={index}
             className={`p-3 rounded-lg ${
