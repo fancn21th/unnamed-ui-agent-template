@@ -4,7 +4,7 @@ import type { MarkdownProps } from "./declaration";
 import { markdownConfig } from "./config";
 // import CustomSource from '@/components/Chat/CustomSource';
 import CustomSources from "./CustomSources";
-import { lazy, Suspense, useDeferredValue } from "react";
+import { lazy, Suspense, useDeferredValue, useMemo } from "react";
 import {
   ImageSkeleton,
   IncompleteLink,
@@ -55,33 +55,47 @@ const Markdown: React.FC<MarkdownProps> = ({
     (props) => <CustomSources messageId={messageId} {...props} />,
     [messageId],
   );
+
+  // 保持 components / streaming 引用稳定，避免 x-markdown 内部重复初始化导致嵌套更新
+  const components = useMemo(
+    () => ({
+      code: Code,
+      "dynamic-form": DynamicForm,
+      "dynamic-table": DynamicTable,
+      think: ThinkComponent,
+      "gpt-vis": GptVis,
+      // 'custom-source': CustomSourceCb,
+      // 'custom-sources': CustomSourcesCb,
+      sup: CustomSourcesCb,
+      table: Table,
+
+      "incomplete-image": ImageSkeleton,
+      "incomplete-link": IncompleteLink,
+      "incomplete-table": TableSkeleton,
+      "incomplete-html": HtmlSkeleton,
+      "incomplete-emphasis": IncompleteEmphasis,
+    }),
+    [CustomSourcesCb],
+  );
+
+  const streaming = useMemo(
+    () => ({
+      hasNextChunk: status === "updating",
+      // 注意：x-markdown 的 enableAnimation 在高频流式更新下可能触发 React 的嵌套更新限制
+      // （Maximum update depth exceeded）。这里关闭动画以保证稳定性。
+      enableAnimation: false,
+    }),
+    [status],
+  );
+
   return (
     <Suspense fallback={<div></div>}>
       <StyledMarkdownWrapper
         content={deferredValue as string}
         // paragraphTag="div"
         config={markdownConfig}
-        components={{
-          code: Code,
-          "dynamic-form": DynamicForm,
-          "dynamic-table": DynamicTable,
-          think: ThinkComponent,
-          "gpt-vis": GptVis,
-          // 'custom-source': CustomSourceCb,
-          // 'custom-sources': CustomSourcesCb,
-          sup: CustomSourcesCb,
-          table: Table,
-
-          "incomplete-image": ImageSkeleton,
-          "incomplete-link": IncompleteLink,
-          "incomplete-table": TableSkeleton,
-          "incomplete-html": HtmlSkeleton,
-          "incomplete-emphasis": IncompleteEmphasis,
-        }}
-        streaming={{
-          hasNextChunk: status === "updating",
-          enableAnimation: true,
-        }}
+        components={components}
+        streaming={streaming}
         {...props}
       />
     </Suspense>
