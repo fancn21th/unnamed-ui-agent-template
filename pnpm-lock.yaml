@@ -29,6 +29,9 @@ importers:
       undici:
         specifier: 7.19.2
         version: 7.19.2
+      zod:
+        specifier: 4.3.6
+        version: 4.3.6
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
