@@ -19,7 +19,7 @@ import {
 import {
   ThinkingStepItem,
   type ThinkingStepItemProps,
-} from "@/components/wuhan/blocks/thinking-step-item-01";
+} from "@/components/wuhan/composed/thinking-step-item";
 import { ThinkingStepItemContainerPrimitive } from "@/components/wuhan/blocks/thinking-step-item-01";
 import { CollapsibleContent } from "@/components/ui/collapsible";
 

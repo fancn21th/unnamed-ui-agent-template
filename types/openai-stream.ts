@@ -145,8 +145,12 @@ export function createBaseChunk(chunkId: string, model: string): Partial<OpenAIS
  * 创建一个角色定义的 chunk（通常是第一个 chunk）
  */
 export function createRoleChunk(chunkId: string, model: string, role: "assistant"): OpenAIStreamChunk {
+  const base = createBaseChunk(chunkId, model);
   return {
-    ...createBaseChunk(chunkId, model)!,
+    id: base.id!,
+    object: base.object!,
+    created: base.created!,
+    model: base.model!,
     choices: [{
       index: 0,
       delta: { role },
@@ -164,8 +168,12 @@ export function createContentChunk(
   content: string,
   finishReason?: OpenAIStreamChunk["choices"][0]["finish_reason"]
 ): OpenAIStreamChunk {
+  const base = createBaseChunk(chunkId, model);
   return {
-    ...createBaseChunk(chunkId, model)!,
+    id: base.id!,
+    object: base.object!,
+    created: base.created!,
+    model: base.model!,
     choices: [{
       index: 0,
       delta: { content },
@@ -178,8 +186,12 @@ export function createContentChunk(
  * 创建一个思考过程增量的 chunk
  */
 export function createReasoningChunk(chunkId: string, model: string, reasoning: string): OpenAIStreamChunk {
+  const base = createBaseChunk(chunkId, model);
   return {
-    ...createBaseChunk(chunkId, model)!,
+    id: base.id!,
+    object: base.object!,
+    created: base.created!,
+    model: base.model!,
     choices: [{
       index: 0,
       delta: { reasoning_content: reasoning },
@@ -198,8 +210,12 @@ export function createToolCallStartChunk(
   functionName: string,
   index: number = 0
 ): OpenAIStreamChunk {
+  const base = createBaseChunk(chunkId, model);
   return {
-    ...createBaseChunk(chunkId, model)!,
+    id: base.id!,
+    object: base.object!,
+    created: base.created!,
+    model: base.model!,
     choices: [{
       index: 0,
       delta: {
@@ -224,8 +240,12 @@ export function createToolCallArgumentsChunk(
   argumentsStr: string,
   index: number = 0
 ): OpenAIStreamChunk {
+  const base = createBaseChunk(chunkId, model);
   return {
-    ...createBaseChunk(chunkId, model)!,
+    id: base.id!,
+    object: base.object!,
+    created: base.created!,
+    model: base.model!,
     choices: [{
       index: 0,
       delta: {
@@ -247,12 +267,16 @@ export function createFinishChunk(
   model: string,
   finishReason: OpenAIStreamChunk["choices"][0]["finish_reason"] = "stop"
 ): OpenAIStreamChunk {
+  const base = createBaseChunk(chunkId, model);
   return {
-    ...createBaseChunk(chunkId, model)!,
+    id: base.id!,
+    object: base.object!,
+    created: base.created!,
+    model: base.model!,
     choices: [{
       index: 0,
       delta: {},
-      finish_reason,
+      finish_reason: finishReason,
     }],
   };
 }
@@ -265,8 +289,12 @@ export function createAttachmentChunk(
   model: string,
   attachment: { id: string; type: string; filename?: string }
 ): OpenAIStreamChunk {
+  const base = createBaseChunk(chunkId, model);
   return {
-    ...createBaseChunk(chunkId, model)!,
+    id: base.id!,
+    object: base.object!,
+    created: base.created!,
+    model: base.model!,
     choices: [{
       index: 0,
       delta: { attachments: [attachment] },
