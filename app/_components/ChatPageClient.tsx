@@ -222,7 +222,7 @@ export default function PlaygroundPage() {
 
   return (
     <TripleSplitPane
-      className="w-full bg-[var(--bg-neutral-light)] gap-3"
+      className="w-full bg-[var(--bg-neutral-light)] gap-3 p-3"
       left={{
         title: "左侧面板",
         defaultSize: 20,
